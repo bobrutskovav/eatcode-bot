@@ -4,8 +4,11 @@ package com.scriptterror.bot;
 import com.scriptterror.bot.event.EventBusFactory;
 import com.scriptterror.bot.event.MessageWithReceiptEvent;
 import com.scriptterror.bot.event.ReceiptSender;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-public class Main {
+
+@SpringBootApplication
+public class App {
 
     public static void main(String[] args) {
 //        ApiContextInitializer.init();

@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'idea'
+    id 'org.springframework.boot' version '2.1.6.RELEASE'
 }
 
 group 'com.scriptterror'
@@ -8,9 +10,9 @@ version '1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
-    maven{
-        url "http://msk1-cnex001.unix.nspk.ru/repository/maven-proxy-group/"
-    }
+//    maven{
+//        url "http://msk1-cnex001.unix.nspk.ru/repository/maven-proxy-group/"
+//    }
     mavenCentral()
 }
 

@@ -1,9 +1,9 @@
 package com.scriptterror.bot;
 
 
-import com.scriptterror.bot.event.EventBusFactory;
 import com.scriptterror.bot.event.MessageWithReceiptEvent;
 import com.scriptterror.bot.event.ReceiptSender;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
@@ -20,11 +20,13 @@ public class App {
 //        } catch (TelegramApiException e) {
 //            e.printStackTrace();
 //        }
+//
+//        EventBusFactory.getAsyncEventBus().register(new ReceiptSender());
+//        MessageWithReceiptEvent event = new MessageWithReceiptEvent();
+//        System.out.println("Current thread is " + Thread.currentThread().getName());
+//        EventBusFactory.getAsyncEventBus().post(event);
 
-        EventBusFactory.getAsyncEventBus().register(new ReceiptSender());
-        MessageWithReceiptEvent event = new MessageWithReceiptEvent();
-        System.out.println("Current thread is " + Thread.currentThread().getName());
-        EventBusFactory.getAsyncEventBus().post(event);
+        SpringApplication.run(App.class);
     }
 }
 

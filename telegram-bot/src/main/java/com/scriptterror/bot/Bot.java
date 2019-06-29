@@ -2,6 +2,7 @@ package com.scriptterror.bot;
 
 import com.google.common.eventbus.EventBus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -9,6 +10,10 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Service
 public class Bot extends TelegramLongPollingBot {
+
+
+    @Value("${bot.api-key}")
+    private String apiKey;
 
 
     private final EventBus eventBus;
@@ -26,6 +31,10 @@ public class Bot extends TelegramLongPollingBot {
             eventBus.post("Receipt");
         }
 
+    }
+
+    public String getApiKey() {
+        return apiKey;
     }
 
     @Override

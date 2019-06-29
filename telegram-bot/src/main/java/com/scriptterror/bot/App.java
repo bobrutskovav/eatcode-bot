@@ -27,7 +27,7 @@ public class App {
 //        System.out.println("Current thread is " + Thread.currentThread().getName());
 //        EventBusFactory.getAsyncEventBus().post(event);
 
-      ApplicationContext context = SpringApplication.run(App.class);
+         SpringApplication.run(App.class);
 
     }
 }

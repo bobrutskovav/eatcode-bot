@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+    id 'idea'
+   // id 'org.springframework.boot' version '2.1.6.RELEASE'
+}
+
+
+sourceCompatibility = 1.8
+
+repositories {
+//    maven{
+//        url "http://msk1-cnex001.unix.nspk.ru/repository/maven-proxy-group/"
+//    }
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'com.google.guava', name: 'guava', version: '28.0-jre'
+    compile group: 'org.telegram', name: 'telegrambots', version: '4.3.1'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.1.6.RELEASE'
+
+}

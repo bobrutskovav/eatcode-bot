@@ -29,9 +29,6 @@ public class App {
 
       ApplicationContext context = SpringApplication.run(App.class);
 
-        Bot bot =  context.getBean(Bot.class);
-
-        System.out.println(bot.getApiKey());
     }
 }
 

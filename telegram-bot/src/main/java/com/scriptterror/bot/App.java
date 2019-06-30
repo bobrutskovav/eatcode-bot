@@ -5,6 +5,7 @@ import com.scriptterror.bot.event.MessageWithReceiptEvent;
 import com.scriptterror.bot.event.ReceiptSender;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 
 
 @SpringBootApplication
@@ -26,7 +27,8 @@ public class App {
 //        System.out.println("Current thread is " + Thread.currentThread().getName());
 //        EventBusFactory.getAsyncEventBus().post(event);
 
-        SpringApplication.run(App.class);
+         SpringApplication.run(App.class);
+
     }
 }
 

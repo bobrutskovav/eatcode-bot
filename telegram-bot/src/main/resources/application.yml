@@ -1,0 +1,9 @@
+bot:
+  api-key: ENC(zpPeR6ohWWQYA/2XrbhDH248pQKnvgNa/Rp3RdZuvSpd6gXlRarAp2mONSsGR4RPuWcYhKMFv6s=)
+  name: "EatCodeBot"
+
+
+jasypt:
+  encryptor:
+    bean: encryptorBean
+    password: ${JASYPT_ENCRYPTOR_PASSWORD:}

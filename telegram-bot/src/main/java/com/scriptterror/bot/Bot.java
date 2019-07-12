@@ -4,13 +4,10 @@ import com.google.common.eventbus.EventBus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
-
-import javax.annotation.PostConstruct;
 
 @Service
 public class Bot extends TelegramLongPollingBot {
@@ -19,12 +16,17 @@ public class Bot extends TelegramLongPollingBot {
     @Value("${bot.api-key}")
     private String apiKey;
 
+    @Value("${bot.name}")
+    private String name;
+
+
 
     private final EventBus eventBus;
 
 
     @Autowired
-    public Bot(EventBus eventBus) {
+    public Bot(EventBus eventBus, DefaultBotOptions botOptions) {
+        super(botOptions);
         this.eventBus = eventBus;
     }
 
@@ -44,7 +46,7 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "EatCodeBot";
+        return name;
     }
 
     @Override

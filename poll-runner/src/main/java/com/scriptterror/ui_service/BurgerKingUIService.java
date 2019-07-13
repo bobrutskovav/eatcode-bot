@@ -1,61 +1,149 @@
 package com.scriptterror.ui_service;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.By;
 
 import java.time.OffsetDateTime;
-import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 
 public class BurgerKingUIService {
 
-    public static void openPageOfPoll(){
+    private Random random = new Random();
+
+    public void openPageOfPoll_step1() {
         open("https://www.bkguestfeedbackrussia.com/");
     }
 
-    public static void acceptTermsOfUse(){
+    public void acceptTermsOfUse_step2() {
         $("#NextButton").click();
     }
 
-    public static void setRestaurantCode(String restaurantCode){
+    public void setRestaurantCode_step3(String restaurantCode) {
         $("#SurveyCode").waitUntil(Condition.appear, 2).sendKeys(restaurantCode);
     }
 
-    public static void setDateAndTimeOfVisit(OffsetDateTime dateTime){
+    public void setDateAndTimeOfVisit_step4(OffsetDateTime dateTime) {
         setDate(dateTime);
         setTime(dateTime);
         clickNextButton();
     }
 
-    private static void clickNextButton(){
+    public void selectTypeOfOrder_step5() {
+        int numberOfType = random.nextInt(3);
+        $$(".radioSimpleInput").get(numberOfType).click();
+        clickNextButton();
+    }
+
+    //Выбирается только "На месте" или "С собой"
+    public void setHowAreYouDidTheOrder_step6() {
+        int numberOfVersion = random.nextInt(2);
+        $$(".radioSimpleInput").get(numberOfVersion).click();
+        clickNextButton();
+    }
+
+    public void setNumberOfPersons_step7() {
+        int numberOfPersons = random.nextInt(3) + 1;
+        $$(".radioSimpleInput").get(numberOfPersons).click();
+        clickNextButton();
+    }
+
+    //появляется только если количество персон > 1
+    public void setWasThereOrderForChild_step8() {
+        int numberOfPersons = random.nextInt(2);
+        $$(".radioSimpleInput").get(numberOfPersons).click();
+        clickNextButton();
+    }
+
+    public void startRandomPoll() {
+        SelenideElement textArea = $(By.xpath("//textarea"));
+        SelenideElement table = $(By.xpath("//tbody"));
+        SelenideElement endOfRandomPoll = $(By.xpath("//*[.='Последний блок вопросов необходим только в целях классификации полученной информации.']"));
+        List<SelenideElement> checkBoxes = $$(".checkboxSimpleInput");
+        List<SelenideElement> radioButtons = $$(".radioSimpleInput");
+        do {
+            if (table.exists()) {
+                setTableRadioButtons();
+            } else if (!textArea.exists()){
+                if (checkBoxes.size() > 0) {
+                    setCheckboxes();
+                } else if (radioButtons.size() > 0) {
+                    setRadioButtons();
+                }
+            } else {
+                textArea.sendKeys("Не хочу про это говорить");
+            }
+            clickNextButton();
+        } while (!endOfRandomPoll.exists());
+
+    }
+
+    public void setSexAgeSalary(){
+        List<SelenideElement> selectsOnPage = $$(By.xpath("//select"));
+        for (SelenideElement selenideElement : selectsOnPage) {
+            List<SelenideElement> options = selenideElement.$$(By.xpath("./option"));
+            int numberOfOption = random.nextInt(options.size());
+            if (numberOfOption == 0) numberOfOption++;
+            selenideElement.selectOption(numberOfOption);
+        }
+        clickNextButton();
+    }
+
+    public String getPromoCode(){
+        clickNextButton();
+        return $(".ValCode").getText();
+    }
+
+    private void setTableRadioButtons() {
+        List<SelenideElement> tableRows = $$(By.xpath("//tbody/tr"));
+        for (int i = 1; i < tableRows.size(); i++) {
+            List<SelenideElement> radioButtons = tableRows.get(i).$$(".radioSimpleInput");
+            int numberOfRadio = random.nextInt(radioButtons.size());
+            radioButtons.get(numberOfRadio).click();
+        }
+    }
+
+    private void setRadioButtons() {
+        List<SelenideElement> radioButtons = $$(".radioSimpleInput");
+        int numberOfRadio = random.nextInt(radioButtons.size());
+        radioButtons.get(numberOfRadio).click();
+    }
+
+    private void setCheckboxes() {
+        List<SelenideElement> checkBoxes = $$(".checkboxSimpleInput");
+        int numberOfCheckBox = random.nextInt(checkBoxes.size());
+        checkBoxes.get(numberOfCheckBox).click();
+    }
+
+    private void clickNextButton() {
         $("#NextButton").click();
     }
 
-    private static void setTime(OffsetDateTime dateTime) {
-        int tempHour = dateTime.getHour()%12 ==0? 12: dateTime.getHour()%12;
-        String hour = tempHour<10 ? "0"+tempHour: String.valueOf(tempHour);
+    private void setTime(OffsetDateTime dateTime) {
+        int tempHour = dateTime.getHour() % 12 == 0 ? 12 : dateTime.getHour() % 12;
+        String hour = tempHour < 10 ? "0" + tempHour : String.valueOf(tempHour);
         $("#InputHour").selectOptionByValue(hour);
 
-        String inputMinute = dateTime.getMinute() <10? "0"+dateTime.getMinute(): ""+dateTime.getMinute();
+        String inputMinute = dateTime.getMinute() < 10 ? "0" + dateTime.getMinute() : "" + dateTime.getMinute();
         $("#InputMinute").selectOptionByValue(inputMinute);
 
-        String inputMeridian = dateTime.getHour()<12 ? "AM": "PM";
+        String inputMeridian = dateTime.getHour() < 12 ? "AM" : "PM";
         $("#InputMeridian").selectOptionByValue(inputMeridian);
     }
 
-    private static void setDate(OffsetDateTime dateTime) {
-        int day =dateTime.getDayOfMonth();
-        String inputDay = day <10? "0"+day: ""+day;
+    private void setDate(OffsetDateTime dateTime) {
+        int day = dateTime.getDayOfMonth();
+        String inputDay = day < 10 ? "0" + day : "" + day;
         $("#InputDay").selectOptionByValue(inputDay);
 
         int month = dateTime.getMonthValue();
-        String inputMonth = month <10? "0"+ month: ""+month;
+        String inputMonth = month < 10 ? "0" + month : "" + month;
         $("#InputMonth").selectOptionByValue(inputMonth);
 
-        $("#InputYear").selectOptionByValue(String.valueOf(dateTime.getYear()).replace("20",""));
+        $("#InputYear").selectOptionByValue(String.valueOf(dateTime.getYear()).replace("20", ""));
     }
-
-
 
 }

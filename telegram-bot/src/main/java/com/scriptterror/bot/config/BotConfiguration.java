@@ -1,6 +1,5 @@
 package com.scriptterror.bot.config;
 
-
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
@@ -31,7 +30,6 @@ public class BotConfiguration {
         return new TelegramBotsApi();
     }
 
-
     @Bean
     public DefaultBotOptions botOptions(Proxy proxy) {
         DefaultBotOptions options = new DefaultBotOptions();
@@ -47,5 +45,4 @@ public class BotConfiguration {
         options.setProxyType(DefaultBotOptions.ProxyType.SOCKS5);
         return options;
     }
-
 }

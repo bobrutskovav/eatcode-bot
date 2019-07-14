@@ -9,17 +9,14 @@ import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-
 /*
    https://github.com/rubenlagus/TelegramBots/tree/master/TelegramBots.wiki/abilities
  */
 @Service
 public class Bot extends AbilityBot {
 
-
     private int creatorId;
     private final EventBus eventBus;
-
 
     @Autowired
     public Bot(@Value("${bot.api-key}") String apiKey,
@@ -39,13 +36,10 @@ public class Bot extends AbilityBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (update.hasMessage() && update.getMessage().hasPhoto()){
+        if (update.hasMessage() && update.getMessage().hasPhoto()) {
             //ToDo Вытащить фотку и отправить её куда нибудь на парсинг в отдельном потоке, ответить человеку.
             SendMessage message = new SendMessage();
             eventBus.post("Receipt");
         }
-
     }
-
-
 }

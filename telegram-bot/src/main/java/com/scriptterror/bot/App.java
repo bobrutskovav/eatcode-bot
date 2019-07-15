@@ -1,12 +1,7 @@
 package com.scriptterror.bot;
 
-
-import com.scriptterror.bot.event.MessageWithReceiptEvent;
-import com.scriptterror.bot.event.ReceiptSender;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-
 
 @SpringBootApplication
 public class App {

@@ -3,16 +3,20 @@ package com.scriptterror.pollrunner.service;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
+import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import static com.codeborne.selenide.Selenide.*;
 
-public class BurgerKingUIService {
 
-    private Random random = new Random();
+@Service
+public class BurgerKingUIService implements CanGetCodeFromPoll {
+
+    private final Random random = new Random();
 
     public void openPageOfPollStep1() {
         open("https://www.bkguestfeedbackrussia.com/");
@@ -146,4 +150,9 @@ public class BurgerKingUIService {
         $("#InputYear").selectOptionByValue(String.valueOf(dateTime.getYear()).replace("20", ""));
     }
 
+
+    @Override
+    public String makePoll(Map<String, String> paramsForPoll) {
+        return null;//ToDo сделать тут все нужные шаги.
+    }
 }

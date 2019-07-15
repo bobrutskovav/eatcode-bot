@@ -1,4 +1,4 @@
-package com.scriptterror.ui_service;
+package com.scriptterror.pollrunner.service;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
@@ -14,45 +14,45 @@ public class BurgerKingUIService {
 
     private Random random = new Random();
 
-    public void openPageOfPoll_step1() {
+    public void openPageOfPollStep1() {
         open("https://www.bkguestfeedbackrussia.com/");
     }
 
-    public void acceptTermsOfUse_step2() {
+    public void acceptTermsOfUseStep2() {
         $("#NextButton").click();
     }
 
-    public void setRestaurantCode_step3(String restaurantCode) {
+    public void setRestaurantCodeStep3(String restaurantCode) {
         $("#SurveyCode").waitUntil(Condition.appear, 2).sendKeys(restaurantCode);
     }
 
-    public void setDateAndTimeOfVisit_step4(OffsetDateTime dateTime) {
+    public void setDateAndTimeOfVisitStep4(OffsetDateTime dateTime) {
         setDate(dateTime);
         setTime(dateTime);
         clickNextButton();
     }
 
-    public void selectTypeOfOrder_step5() {
+    public void selectTypeOfOrderStep5() {
         int numberOfType = random.nextInt(3);
         $$(".radioSimpleInput").get(numberOfType).click();
         clickNextButton();
     }
 
     //Выбирается только "На месте" или "С собой"
-    public void setHowAreYouDidTheOrder_step6() {
+    public void setHowAreYouDidTheOrderStep6() {
         int numberOfVersion = random.nextInt(2);
         $$(".radioSimpleInput").get(numberOfVersion).click();
         clickNextButton();
     }
 
-    public void setNumberOfPersons_step7() {
+    public void setNumberOfPersonsStep7() {
         int numberOfPersons = random.nextInt(3) + 1;
         $$(".radioSimpleInput").get(numberOfPersons).click();
         clickNextButton();
     }
 
     //появляется только если количество персон > 1
-    public void setWasThereOrderForChild_step8() {
+    public void setWasThereOrderForChildStep8() {
         int numberOfPersons = random.nextInt(2);
         $$(".radioSimpleInput").get(numberOfPersons).click();
         clickNextButton();

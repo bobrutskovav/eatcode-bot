@@ -1,20 +1,26 @@
 package com.scriptterror.pollrunner.service;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.FailureCallback;
+import org.springframework.util.concurrent.SuccessCallback;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.Future;
 
 import static com.codeborne.selenide.Selenide.*;
 
 
 @Service
-public class BurgerKingUIService implements CanGetCodeFromPoll {
+public class BurgerKingUITask implements PollTask {
 
     private final Random random = new Random();
 
@@ -71,7 +77,7 @@ public class BurgerKingUIService implements CanGetCodeFromPoll {
         do {
             if (table.exists()) {
                 setTableRadioButtons();
-            } else if (!textArea.exists()){
+            } else if (!textArea.exists()) {
                 if (checkBoxes.size() > 0) {
                     setCheckboxes();
                 } else if (radioButtons.size() > 0) {
@@ -85,7 +91,7 @@ public class BurgerKingUIService implements CanGetCodeFromPoll {
 
     }
 
-    public void setSexAgeSalary(){
+    public void setSexAgeSalary() {
         List<SelenideElement> selectsOnPage = $$(By.xpath("//select"));
         for (SelenideElement selenideElement : selectsOnPage) {
             List<SelenideElement> options = selenideElement.$$(By.xpath("./option"));
@@ -96,7 +102,7 @@ public class BurgerKingUIService implements CanGetCodeFromPoll {
         clickNextButton();
     }
 
-    public String getPromoCode(){
+    public String getPromoCode() {
         clickNextButton();
         return $(".ValCode").getText();
     }
@@ -152,7 +158,22 @@ public class BurgerKingUIService implements CanGetCodeFromPoll {
 
 
     @Override
-    public String makePoll(Map<String, String> paramsForPoll) {
-        return null;//ToDo сделать тут все нужные шаги.
+    @Async
+    public Future<String> makePoll(Map<String, String> paramsForPoll, SuccessCallback<String> sCallback, FailureCallback fCallback) {
+        openPageOfPollStep1();
+        acceptTermsOfUseStep2();
+        setRestaurantCodeStep3("19641");
+        setDateAndTimeOfVisitStep4(OffsetDateTime.now());
+        selectTypeOfOrderStep5();
+        setHowAreYouDidTheOrderStep6();
+        setNumberOfPersonsStep7();
+        setWasThereOrderForChildStep8();
+        startRandomPoll();
+        setSexAgeSalary();
+        //Todo вернуть именно код , а не 'Ваш промокод: FF500586'
+        AsyncResult<String> result = new AsyncResult(getPromoCode());
+        Selenide.close();
+        result.addCallback(sCallback, fCallback);
+        return result;
     }
 }

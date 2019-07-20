@@ -1,4 +1,4 @@
-import com.scriptterror.pollrunner.service.BurgerKingUIService;
+import com.scriptterror.pollrunner.service.BurgerKingUITask;
 import org.junit.Test;
 
 import java.time.OffsetDateTime;
@@ -7,7 +7,7 @@ public class FirstTest {
     @Test
     public void openMainPageTest(){
 
-        BurgerKingUIService service = new BurgerKingUIService();
+        BurgerKingUITask service = new BurgerKingUITask();
         service.openPageOfPollStep1();
         service.acceptTermsOfUseStep2();
         service.setRestaurantCodeStep3("19641");

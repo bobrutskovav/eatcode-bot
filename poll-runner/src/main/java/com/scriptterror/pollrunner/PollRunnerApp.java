@@ -3,11 +3,13 @@ package com.scriptterror.pollrunner;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
-public class App {
+@EnableAsync
+public class PollRunnerApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(App.class);
+        SpringApplication.run(PollRunnerApp.class);
     }
 }

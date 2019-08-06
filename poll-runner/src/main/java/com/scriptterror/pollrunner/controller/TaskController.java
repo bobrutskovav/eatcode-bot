@@ -32,7 +32,7 @@ public class TaskController {
     }
 
 
-    @GetMapping({"/discountcode"})
+    @GetMapping({"/*/discountcode"})
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void getDiscount(DiscountCodeRequest request) {
         /*

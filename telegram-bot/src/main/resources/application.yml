@@ -9,6 +9,9 @@ bot:
     password: ENC(0qcmDoJN+xKmP8X8TV22/w==)
 
 
+zuul:
+  host: localhost
+  port: 8083
 
 jasypt:
   encryptor:

@@ -1,58 +1,68 @@
-package com.scriptterror.ui_service;
+package com.scriptterror.pollrunner.service;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.FailureCallback;
+import org.springframework.util.concurrent.SuccessCallback;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.Future;
 
 import static com.codeborne.selenide.Selenide.*;
 
-public class BurgerKingUIService {
 
-    private Random random = new Random();
+@Service
+public class BurgerKingUITask implements PollTask {
 
-    public void openPageOfPoll_step1() {
+    private final Random random = new Random();
+
+    public void openPageOfPollStep1() {
         open("https://www.bkguestfeedbackrussia.com/");
     }
 
-    public void acceptTermsOfUse_step2() {
+    public void acceptTermsOfUseStep2() {
         $("#NextButton").click();
     }
 
-    public void setRestaurantCode_step3(String restaurantCode) {
+    public void setRestaurantCodeStep3(String restaurantCode) {
         $("#SurveyCode").waitUntil(Condition.appear, 2).sendKeys(restaurantCode);
     }
 
-    public void setDateAndTimeOfVisit_step4(OffsetDateTime dateTime) {
+    public void setDateAndTimeOfVisitStep4(OffsetDateTime dateTime) {
         setDate(dateTime);
         setTime(dateTime);
         clickNextButton();
     }
 
-    public void selectTypeOfOrder_step5() {
+    public void selectTypeOfOrderStep5() {
         int numberOfType = random.nextInt(3);
         $$(".radioSimpleInput").get(numberOfType).click();
         clickNextButton();
     }
 
     //Выбирается только "На месте" или "С собой"
-    public void setHowAreYouDidTheOrder_step6() {
+    public void setHowAreYouDidTheOrderStep6() {
         int numberOfVersion = random.nextInt(2);
         $$(".radioSimpleInput").get(numberOfVersion).click();
         clickNextButton();
     }
 
-    public void setNumberOfPersons_step7() {
+    public void setNumberOfPersonsStep7() {
         int numberOfPersons = random.nextInt(3) + 1;
         $$(".radioSimpleInput").get(numberOfPersons).click();
         clickNextButton();
     }
 
     //появляется только если количество персон > 1
-    public void setWasThereOrderForChild_step8() {
+    public void setWasThereOrderForChildStep8() {
         int numberOfPersons = random.nextInt(2);
         $$(".radioSimpleInput").get(numberOfPersons).click();
         clickNextButton();
@@ -67,7 +77,7 @@ public class BurgerKingUIService {
         do {
             if (table.exists()) {
                 setTableRadioButtons();
-            } else if (!textArea.exists()){
+            } else if (!textArea.exists()) {
                 if (checkBoxes.size() > 0) {
                     setCheckboxes();
                 } else if (radioButtons.size() > 0) {
@@ -81,7 +91,7 @@ public class BurgerKingUIService {
 
     }
 
-    public void setSexAgeSalary(){
+    public void setSexAgeSalary() {
         List<SelenideElement> selectsOnPage = $$(By.xpath("//select"));
         for (SelenideElement selenideElement : selectsOnPage) {
             List<SelenideElement> options = selenideElement.$$(By.xpath("./option"));
@@ -92,7 +102,7 @@ public class BurgerKingUIService {
         clickNextButton();
     }
 
-    public String getPromoCode(){
+    public String getPromoCode() {
         clickNextButton();
         return $(".ValCode").getText();
     }
@@ -146,4 +156,24 @@ public class BurgerKingUIService {
         $("#InputYear").selectOptionByValue(String.valueOf(dateTime.getYear()).replace("20", ""));
     }
 
+
+    @Override
+    @Async
+    public Future<String> makePoll(Map<String, String> paramsForPoll, SuccessCallback<String> sCallback, FailureCallback fCallback) {
+        openPageOfPollStep1();
+        acceptTermsOfUseStep2();
+        setRestaurantCodeStep3("19641");
+        setDateAndTimeOfVisitStep4(OffsetDateTime.now());
+        selectTypeOfOrderStep5();
+        setHowAreYouDidTheOrderStep6();
+        setNumberOfPersonsStep7();
+        setWasThereOrderForChildStep8();
+        startRandomPoll();
+        setSexAgeSalary();
+        //Todo вернуть именно код , а не 'Ваш промокод: FF500586'
+        AsyncResult<String> result = new AsyncResult(getPromoCode());
+        Selenide.close();
+        result.addCallback(sCallback, fCallback);
+        return result;
+    }
 }

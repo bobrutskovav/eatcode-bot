@@ -1,0 +1,11 @@
+server:
+  port: 8092
+
+
+bot:
+  host: "localhost"
+  port: 8081
+  endpoint: "/coderesult"
+logging:
+  level:
+    root: DEBUG

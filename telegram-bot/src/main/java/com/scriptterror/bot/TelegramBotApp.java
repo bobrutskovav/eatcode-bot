@@ -18,7 +18,7 @@ public class TelegramBotApp {
 //        }
 //
 //        EventBusFactory.getAsyncEventBus().register(new ReceiptSender());
-//        MessageWithReceiptEvent event = new MessageWithReceiptEvent();
+//        StartPollEvent event = new StartPollEvent();
 //        System.out.println("Current thread is " + Thread.currentThread().getName());
 //        EventBusFactory.getAsyncEventBus().post(event);
 

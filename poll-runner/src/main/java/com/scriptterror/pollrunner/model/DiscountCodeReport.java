@@ -3,7 +3,7 @@ package com.scriptterror.pollrunner.model;
 public class DiscountCodeReport {
 
     private String discountCode;
-    private String operationId;
+    private long operationId;
 
     public String getDiscountCode() {
         return discountCode;
@@ -13,11 +13,11 @@ public class DiscountCodeReport {
         this.discountCode = discountCode;
     }
 
-    public String getOperationId() {
+    public long getOperationId() {
         return operationId;
     }
 
-    public void setOperationId(String operationId) {
+    public void setOperationId(long operationId) {
         this.operationId = operationId;
     }
 }

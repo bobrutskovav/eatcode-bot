@@ -1,11 +1,11 @@
-http://localhost:8080/discountcode?operationId=1
+http://localhost:8080/discountcode?chatId=1
 
 ###
 
-http://localhost:8080/discountcode?operationId=2
+http://localhost:8080/discountcode?chatId=2
 
 ###
 
-http://localhost:8080/discountcode?operationId=3
+http://localhost:8080/discountcode?chatId=3
 
 ###

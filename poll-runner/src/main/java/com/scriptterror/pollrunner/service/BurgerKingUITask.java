@@ -159,7 +159,7 @@ public class BurgerKingUITask implements PollTask {
 
     @Override
     @Async
-    public Future<String> makePoll(Map<String, String> paramsForPoll, SuccessCallback<String> sCallback, FailureCallback fCallback) {
+    public Future<String> makePoll(Map<String, Long> paramsForPoll, SuccessCallback<String> sCallback, FailureCallback fCallback) {
         openPageOfPollStep1();
         acceptTermsOfUseStep2();
         setRestaurantCodeStep3("19641");

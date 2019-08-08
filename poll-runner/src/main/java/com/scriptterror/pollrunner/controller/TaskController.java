@@ -44,8 +44,8 @@ public class TaskController {
          *
          *  В том момент Future будет выполнено - отправить боту код
          */
-        String operationId = request.getOperationId();
-        Map<String, String> params = new HashMap<>();
+        long operationId = request.getChatId();
+        Map<String, Long> params = new HashMap<>();
         params.put("operationId", operationId);
         Future<String> future = task.makePoll(params, result1 -> {
             System.out.println("Result : " + result1);

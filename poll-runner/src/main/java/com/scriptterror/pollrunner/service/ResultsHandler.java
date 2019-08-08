@@ -20,7 +20,7 @@ public class ResultsHandler {
         this.discountCodeSender = discountCodeSender;
     }
 
-    public void registerAsyncResult(String operationId, Future<String> result) {
+    public void registerAsyncResult(long operationId, Future<String> result) {
         pollResults.put(operationId, result);
     }
 }

@@ -1,16 +1,16 @@
 package com.scriptterror.pollrunner.model;
 
+import lombok.Data;
+
+@Data
 public class DiscountCodeRequest {
 
-    private String operationId;
+    private long chatId;
 
-    public String getOperationId() {
-        return operationId;
+    public long getChatId() {
+        return chatId;
     }
 
-    public void setOperationId(String operationId) {
-        this.operationId = operationId;
-    }
 
     //ToDo здесь будут данные из чека
 

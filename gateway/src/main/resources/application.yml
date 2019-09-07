@@ -1,0 +1,9 @@
+zuul:
+  routes:
+    telegram-bot:
+      url: http://localhost:8091
+    poll-runnner-burger-king:
+      url: http://localhost:8092
+
+  prefix: /service
+

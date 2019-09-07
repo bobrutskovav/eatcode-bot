@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+version 'unspecified'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-zuul
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-zuul', version: '1.4.7.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-web:2.1.6.RELEASE'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}

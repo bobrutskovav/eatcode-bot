@@ -23,6 +23,7 @@ public class DiscountCodeSender {
         this.host = host;
         this.port = port;
         this.endpoint = endpoint;
+        //ToDo стоит отправить обратно в zuul?
         this.resultEndpoint = String.format("http://%s:%s%s", host, port, endpoint);
 
     }

@@ -11,7 +11,7 @@ import java.util.concurrent.Future;
 @Component
 public class ResultsHandler {
 
-    private ConcurrentMap<String, Future<String>> pollResults = new ConcurrentHashMap<>();
+    private ConcurrentMap<Long, Future<String>> pollResults = new ConcurrentHashMap<>();
 
     private DiscountCodeSender discountCodeSender;
 

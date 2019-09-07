@@ -18,4 +18,4 @@ jasypt:
     bean: encryptorBean
     password: ${JASYPT_ENCRYPTOR_PASSWORD:}
 server:
-  port: 8081
+  port: 8091

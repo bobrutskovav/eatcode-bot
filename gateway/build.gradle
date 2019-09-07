@@ -11,8 +11,7 @@ repositories {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-zuul
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-zuul', version: '1.4.7.RELEASE'
-    compile 'org.springframework.boot:spring-boot-starter-web:2.1.6.RELEASE'
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-zuul
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-zuul', version: '2.1.2.RELEASE'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }

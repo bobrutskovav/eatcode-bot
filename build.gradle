@@ -13,5 +13,8 @@ subprojects {
 task runAll {
 }
 
-runAll.dependsOn ':telegram-bot'
-runAll.dependsOn ':poll-runnner'
+
+//runAll.dependsOn ':gateway'
+//runAll.dependsOn ':telegram-bot'
+//runAll.dependsOn ':poll-runnner'
+

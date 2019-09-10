@@ -2,6 +2,7 @@ package com.scriptterror.bot.config;
 
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
+import com.scriptterror.bot.HttpClient;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -21,8 +22,10 @@ public class BotConfiguration {
     }
 
     @Bean
-    public EventBus eventBus(){
-        return new AsyncEventBus(Executors.newCachedThreadPool());
+    public EventBus eventBus(HttpClient httpClient) {
+        EventBus eventBus = new AsyncEventBus(Executors.newCachedThreadPool());
+        eventBus.register(httpClient);
+        return eventBus;
     }
 
     @Bean

@@ -11,11 +11,13 @@ bot:
 
 zuul:
   host: localhost
-  port: 8083
+  port: 8080
+
+
+server:
+  port: 8091
 
 jasypt:
   encryptor:
     bean: encryptorBean
     password: ${JASYPT_ENCRYPTOR_PASSWORD:}
-server:
-  port: 8091

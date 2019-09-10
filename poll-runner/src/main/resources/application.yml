@@ -2,10 +2,10 @@ server:
   port: 8092
 
 
-bot:
-  host: "localhost"
-  port: 8091
-  endpoint: "/coderesult"
+zuul:
+  host: localhost
+  port: 8080
+
 logging:
   level:
     root: DEBUG

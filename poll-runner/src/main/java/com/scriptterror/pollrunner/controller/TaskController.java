@@ -5,6 +5,7 @@ import com.scriptterror.pollrunner.model.DiscountCodeRequest;
 import com.scriptterror.pollrunner.service.DiscountCodeSender;
 import com.scriptterror.pollrunner.service.PollTask;
 import com.scriptterror.pollrunner.service.ResultsHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-
+@Slf4j
 @RestController
 public class TaskController {
 
@@ -47,12 +48,14 @@ public class TaskController {
         long operationId = request.getChatId();
         Map<String, Long> params = new HashMap<>();
         params.put("operationId", operationId);
-        Future<String> future = task.makePoll(params, result1 -> {
-            System.out.println("Result : " + result1);
-            String code = result1;
-            discountCodeSender.sendDiscountCodeToBot(code, operationId);
-            //Todo возможно надо сделать через event
-        }, System.err::println);
+        Future<String> future = task.makePoll(params, discountCode -> {
+                    log.debug("Complete making a poll with result : {}", discountCode);
+                    discountCodeSender.sendDiscountCodeToBot(discountCode, operationId);
+                    //Todo возможно надо сделать через event
+                },
+
+                (exception) -> log.error("Error {} on send a discount code to bot! OperationId {} ", exception.getMessage(), operationId)
+        );
         handler.registerAsyncResult(operationId, future);
 
 

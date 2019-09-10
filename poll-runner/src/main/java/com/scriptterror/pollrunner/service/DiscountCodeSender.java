@@ -12,18 +12,11 @@ public class DiscountCodeSender {
 
     private RestTemplate restTemplate = new RestTemplate();
 
-    private String host;
-    private String endpoint;
-    private String port;
+    private String endpoint = "/telegram-bot/discountcode";
     private String resultEndpoint;
 
-    public DiscountCodeSender(@Value("${bot.host}") String host,
-                              @Value("${bot.port}") String port,
-                              @Value("${bot.endpoint}") String endpoint) {
-        this.host = host;
-        this.port = port;
-        this.endpoint = endpoint;
-        //ToDo стоит отправить обратно в zuul?
+    public DiscountCodeSender(@Value("${zuul.host}") String host,
+                              @Value("${zuul.port}") String port) {
         this.resultEndpoint = String.format("http://%s:%s%s", host, port, endpoint);
 
     }

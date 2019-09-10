@@ -14,7 +14,7 @@ public class KeyBoardFactory {
         InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
         List<InlineKeyboardButton> rowInline = new ArrayList<>();
-        rowInline.add(new InlineKeyboardButton().setText("Burger King").setCallbackData("Burger King"));
+        rowInline.add(new InlineKeyboardButton().setText("Burger King").setCallbackData("burger-king"));
         rowsInline.add(rowInline);
         inlineKeyboard.setKeyboard(rowsInline);
         return inlineKeyboard;

@@ -1,6 +1,7 @@
 package com.scriptterror.bot;
 
 import com.google.common.eventbus.EventBus;
+import com.scriptterror.bot.event.StartPollEvent;
 import com.scriptterror.bot.model.ChatState;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static com.scriptterror.bot.model.ChatState.ON_START;
@@ -105,6 +107,11 @@ public class Bot extends AbilityBot {
 
             //ToDo отправить сообщение в шину с айди чата и айди кнопки, поставить статус чату что он ожидает кода, по заврешению отправить код в чат.
             System.out.println(String.format("Right now get a buttonId %s from chatId %s", buttonId, chatId));
+            StartPollEvent event = new StartPollEvent();
+            event.setChatId(chatId);
+            event.setRestaurantName(buttonId);
+            event.setOperationEvent(UUID.randomUUID());
+            eventBus.post(event);
         }
     }
 

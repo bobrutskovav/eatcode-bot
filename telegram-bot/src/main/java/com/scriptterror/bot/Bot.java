@@ -69,7 +69,6 @@ public class Bot extends AbilityBot {
                         log.error("Some trouble with API", e);
                     }
                 })
-//                .reply(action -> System.out.println(action.getCallbackQuery().getData()))
                 .build();
     }
 
@@ -121,6 +120,13 @@ public class Bot extends AbilityBot {
             event.setRestaurantName(buttonId);
             eventBus.post(event);
             chatStates.put(chatId, ChatState.AWAITING_FOR_CODE);
+            SendMessage message = new SendMessage(chatId, Constants.PLEASE_WAIT);
+            try {
+                sender.execute(message);
+            } catch (TelegramApiException e) {
+                log.error("Problem with telegram api", e);
+            }
+            //ToDo сделать две очереди, одну на отправку, вторую на получение
         }
     }
 

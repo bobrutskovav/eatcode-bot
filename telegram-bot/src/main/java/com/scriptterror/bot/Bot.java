@@ -1,59 +1,128 @@
 package com.scriptterror.bot;
 
 import com.google.common.eventbus.EventBus;
+import com.scriptterror.bot.event.StartPollEvent;
+import com.scriptterror.bot.model.ChatState;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.abilitybots.api.bot.AbilityBot;
+import org.telegram.abilitybots.api.db.DBContext;
+import org.telegram.abilitybots.api.objects.*;
+import org.telegram.abilitybots.api.sender.MessageSender;
+import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import javax.annotation.PostConstruct;
+import java.util.Map;
+import java.util.function.Consumer;
 
+import static com.scriptterror.bot.model.ChatState.ON_START;
+import static org.telegram.abilitybots.api.util.AbilityUtils.getChatId;
+
+/*
+   https://github.com/rubenlagus/TelegramBots/tree/master/TelegramBots.wiki/abilities
+ */
 @Service
-public class Bot extends TelegramLongPollingBot {
- //TODO переделать бота под AbilityBot https://github.com/rubenlagus/TelegramBots/tree/master/telegrambots-abilities
+@Slf4j
+public class Bot extends AbilityBot {
 
-    @Value("${bot.api-key}")
-    private String apiKey;
-
-
+    private int creatorId;
     private final EventBus eventBus;
-
+    private final ResponseHandler responseHandler;
 
     @Autowired
-    public Bot(EventBus eventBus) {
+    public Bot(@Value("${bot.api-key}") String apiKey,
+               @Value("${bot.name}") String name,
+               @Value("${bot.creatorId}") int creatorId,
+               EventBus eventBus,
+               DefaultBotOptions botOptions) {
+        super(apiKey, name, botOptions);
         this.eventBus = eventBus;
+        this.responseHandler = new ResponseHandler(sender, db);//Todo Сделать красивее
+        this.creatorId = creatorId;
     }
 
     @Override
-    public void onUpdateReceived(Update update) {
-        if (update.hasMessage() && update.getMessage().hasPhoto()){
-            //ToDo Вытащить фотку и отправить её куда нибудь на парсинг в отдельном потоке, ответить человеку.
-            SendMessage message = new SendMessage();
-            eventBus.post("Receipt");
+    public int creatorId() {
+        return creatorId;
+    }
+
+
+    public Ability replyToStart() {
+        return Ability.builder()
+                .name("start")
+                .info("Start")
+                .locality(Locality.USER)
+                .input(0)
+                .privacy(Privacy.PUBLIC)
+                .action(action -> {
+                    try {
+                        sender.execute(new SendMessage()
+                                .setChatId(action.chatId())
+                                .setText(Constants.START_MESSAGE)
+                                .setReplyMarkup(KeyBoardFactory.withDiscountType()));
+
+                    } catch (TelegramApiException e) {
+                        log.error("Some trouble with API", e);
+                    }
+                })
+//                .reply(action -> System.out.println(action.getCallbackQuery().getData()))
+                .build();
+    }
+
+
+    public Reply replyToChooseButtons() {
+        Consumer<Update> action = msg -> responseHandler.replyToChooseButtons(getChatId(msg), msg.getCallbackQuery().getData());
+        return Reply.of(action, Flag.CALLBACK_QUERY);
+    }
+
+    public void sendDiscountCodeToChat(long chatId, String discountCode) {
+
+        try {
+            this.execute(new SendMessage(chatId, discountCode));
+        } catch (TelegramApiException e) {
+            log.error("Can't send discount code {} to chatId : {}", discountCode, chatId);
+            e.printStackTrace();
+        }
+    }
+
+
+    public class ResponseHandler {
+
+        private final MessageSender sender;
+        private final Map<Long, ChatState> chatStates;
+
+        public ResponseHandler(MessageSender sender, DBContext dbContext) {
+            this.sender = sender;
+            this.chatStates = dbContext.getMap("CHAT_STATES");
         }
 
+
+        public void replyToStart(long chatId) {
+            try {
+                sender.execute(new SendMessage()
+                        .setText(Constants.START_MESSAGE)
+                        .setChatId(chatId));
+                chatStates.put(chatId, ON_START);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void replyToChooseButtons(Long chatId, String buttonId) {
+
+            //ToDo отправить сообщение в шину с айди чата и айди кнопки, поставить статус чату что он ожидает кода, по заврешению отправить код в чат.
+            System.out.println(String.format("Right now get a buttonId %s from chatId %s", buttonId, chatId));
+            StartPollEvent event = new StartPollEvent();
+            event.setChatId(chatId);
+            event.setRestaurantName(buttonId);
+            eventBus.post(event);
+            chatStates.put(chatId, ChatState.AWAITING_FOR_CODE);
+        }
     }
-
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    @Override
-    public String getBotUsername() {
-        return "EatCodeBot";
-    }
-
-    @Override
-    public String getBotToken() {
-        return apiKey;
-    }
-
-
-
 
 
 }

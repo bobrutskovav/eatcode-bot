@@ -1,0 +1,11 @@
+server:
+  port: 8092
+
+
+zuul:
+  host: localhost
+  port: 8080
+
+logging:
+  level:
+    root: DEBUG

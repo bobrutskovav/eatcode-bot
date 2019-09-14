@@ -1,7 +1,21 @@
 bot:
   api-key: ENC(zpPeR6ohWWQYA/2XrbhDH248pQKnvgNa/Rp3RdZuvSpd6gXlRarAp2mONSsGR4RPuWcYhKMFv6s=)
-  name: "EatCodeBot"
+  name: ENC(NDr1pxYNLiiIxuEkiDPIRkXFEaXrdU2r)
+  creatorId: ENC(3gVt6eCX9EtHnZW9jmb8/inA1QtdF0L7)
+  proxy:
+    host: ENC(p2h/Dvkbd3XYKUaMoABuO6O5KCn7Ja0H)
+    port: ENC(sWqST9+U5SuqxICk4aYX5A==)
+    user: ENC(0qcmDoJN+xKmP8X8TV22/w==)
+    password: ENC(0qcmDoJN+xKmP8X8TV22/w==)
 
+
+zuul:
+  host: localhost
+  port: 8080
+
+
+server:
+  port: 8091
 
 jasypt:
   encryptor:

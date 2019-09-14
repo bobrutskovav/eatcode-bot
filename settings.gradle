@@ -1,4 +1,5 @@
 rootProject.name = 'eatcode-bot'
 include 'telegram-bot'
 include 'poll-runner'
+include 'gateway'
 

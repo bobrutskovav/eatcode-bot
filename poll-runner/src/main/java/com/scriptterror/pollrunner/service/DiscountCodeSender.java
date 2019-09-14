@@ -24,7 +24,7 @@ public class DiscountCodeSender {
     public void sendDiscountCodeToBot(String code, long operationId) {
         DiscountCodeReport report = new DiscountCodeReport();
         report.setDiscountCode(code);
-        report.setOperationId(operationId);
+        report.setChatId(operationId);
         restTemplate.postForLocation(resultEndpoint, report);
     }
 }

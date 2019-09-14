@@ -17,7 +17,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 import static com.scriptterror.bot.model.ChatState.ON_START;
@@ -80,6 +79,16 @@ public class Bot extends AbilityBot {
         return Reply.of(action, Flag.CALLBACK_QUERY);
     }
 
+    public void sendDiscountCodeToChat(long chatId, String discountCode) {
+
+        try {
+            this.execute(new SendMessage(chatId, discountCode));
+        } catch (TelegramApiException e) {
+            log.error("Can't send discount code {} to chatId : {}", discountCode, chatId);
+            e.printStackTrace();
+        }
+    }
+
 
     public class ResponseHandler {
 
@@ -110,8 +119,8 @@ public class Bot extends AbilityBot {
             StartPollEvent event = new StartPollEvent();
             event.setChatId(chatId);
             event.setRestaurantName(buttonId);
-            event.setOperationEvent(UUID.randomUUID());
             eventBus.post(event);
+            chatStates.put(chatId, ChatState.AWAITING_FOR_CODE);
         }
     }
 

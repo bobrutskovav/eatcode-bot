@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,9 +34,9 @@ public class TaskController {
     }
 
 
-    @PostMapping({"/discountcode"})
+    @PostMapping("/discountcode")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void getDiscount(DiscountCodeRequest request) {
+    public void postTask(@RequestBody DiscountCodeRequest request) {
         /*
          *  1. Принять айди.
          *  2. Запустить метод который асинхронно заполняет опрос и возвращает Future.
@@ -45,18 +46,18 @@ public class TaskController {
          *
          *  В том момент Future будет выполнено - отправить боту код
          */
-        long operationId = request.getChatId();
+        long chatId = request.getChatId();
         Map<String, Long> params = new HashMap<>();
-        params.put("operationId", operationId);
+        params.put("operationId", chatId);
         Future<String> future = task.makePoll(params, discountCode -> {
                     log.debug("Complete making a poll with result : {}", discountCode);
-                    discountCodeSender.sendDiscountCodeToBot(discountCode, operationId);
+                    discountCodeSender.sendDiscountCodeToBot(discountCode, chatId);
                     //Todo возможно надо сделать через event
                 },
 
-                (exception) -> log.error("Error {} on send a discount code to bot! OperationId {} ", exception.getMessage(), operationId)
+                (exception) -> log.error("Error {} on send a discount code to bot! OperationId {} ", exception.getMessage(), chatId)
         );
-        handler.registerAsyncResult(operationId, future);
+        handler.registerAsyncResult(chatId, future);
 
 
     }

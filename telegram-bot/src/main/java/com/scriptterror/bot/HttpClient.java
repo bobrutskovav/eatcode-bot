@@ -2,6 +2,7 @@ package com.scriptterror.bot;
 
 import com.google.common.eventbus.Subscribe;
 import com.scriptterror.bot.event.StartPollEvent;
+import com.scriptterror.bot.model.DiscountCodeRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -24,8 +25,10 @@ public class HttpClient {
         String endpoint = String.format("http://%s:%d/poll-runner-%s/discountcode", zuulHost, zuulPort, event.getRestaurantName());
         log.debug("Send a StartPollEvent {} to {}", event, endpoint);
 
-        restTemplate.postForEntity(endpoint, event, String.class);
-        //  restTemplate.exchange(endpoint, HttpMethod.POST);//ToDo отправить пост в зуул, принять его на таскконтроллере поллраннера,
-        System.out.println("In thread " + Thread.currentThread().getName() + " Event recieved " + event.getName());
+
+        DiscountCodeRequest request = new DiscountCodeRequest();
+        request.setChatId(event.getChatId());
+        restTemplate.postForEntity(endpoint, request, String.class);
+
     }
 }

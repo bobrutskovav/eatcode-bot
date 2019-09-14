@@ -6,6 +6,7 @@ import com.scriptterror.bot.model.DiscountCodeResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -21,9 +22,10 @@ public class PollRunnerTaskResultController {
     }
 
     @PostMapping("/discountcode")
-    public void discountСode(DiscountCodeResponse response) {
-        log.info("Received a DiscountCode {} for operationId {}", response.getDiscountCode(), response.getOperationId());
-
-
+    public void discountСode(@RequestBody DiscountCodeResponse response) {
+        long chatId = response.getChatId();
+        String code = response.getDiscountCode();
+        log.debug("Received a DiscountCode {} for chatId {}", code, chatId);
+        bot.sendDiscountCodeToChat(chatId, code);
     }
 }

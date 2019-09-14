@@ -1,23 +1,13 @@
 package com.scriptterror.pollrunner.model;
 
+
+import lombok.Data;
+
+@Data
 public class DiscountCodeReport {
 
+    private long chatId;
     private String discountCode;
-    private long operationId;
 
-    public String getDiscountCode() {
-        return discountCode;
-    }
 
-    public void setDiscountCode(String discountCode) {
-        this.discountCode = discountCode;
-    }
-
-    public long getOperationId() {
-        return operationId;
-    }
-
-    public void setOperationId(long operationId) {
-        this.operationId = operationId;
-    }
 }

@@ -13,9 +13,12 @@ import org.telegram.abilitybots.api.objects.*;
 import org.telegram.abilitybots.api.sender.MessageSender;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -77,7 +80,7 @@ public class Bot extends AbilityBot {
 
 
     public Reply replyToChooseButtons() {
-        Consumer<Update> action = msg -> responseHandler.replyToChooseButtons(getChatId(msg), msg.getCallbackQuery().getData());
+        Consumer<Update> action = msg -> responseHandler.replyToChooseButtons(getChatId(msg), msg.getCallbackQuery().getData(), msg.getCallbackQuery().getMessage().getMessageId());
 
         return Reply.of(action, Flag.CALLBACK_QUERY);
     }
@@ -115,7 +118,7 @@ public class Bot extends AbilityBot {
             }
         }
 
-        public void replyToChooseButtons(Long chatId, String buttonId) {
+        public void replyToChooseButtons(Long chatId, String buttonId, int messageId) {
 
             log.trace("Send StartPollEvent to EventBus for chatId {} and ButtonId {}", chatId, buttonId);
             StartPollEvent event = new StartPollEvent();
@@ -123,8 +126,14 @@ public class Bot extends AbilityBot {
             event.setRestaurantName(buttonId);
             eventBus.post(event);
             chatStates.put(chatId, ChatState.AWAITING_FOR_CODE);
+
+            EditMessageReplyMarkup removeKeyBoard = new EditMessageReplyMarkup();
+            removeKeyBoard.setChatId(chatId);
+            removeKeyBoard.setMessageId(messageId);
+            removeKeyBoard.setReplyMarkup(new InlineKeyboardMarkup().setKeyboard(new ArrayList<>()));
             SendMessage message = new SendMessage(chatId, Constants.PLEASE_WAIT);
             try {
+                sender.execute(removeKeyBoard);
                 sender.execute(message);
             } catch (TelegramApiException e) {
                 log.error("Problem with telegram api", e);

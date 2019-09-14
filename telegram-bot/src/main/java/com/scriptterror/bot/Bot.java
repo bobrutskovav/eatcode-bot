@@ -60,6 +60,9 @@ public class Bot extends AbilityBot {
                 .privacy(Privacy.PUBLIC)
                 .action(action -> {
                     try {
+                        log.debug("Command Start executed by {} {}",
+                                action.user().getUserName(),
+                                action.update().getMessage());
                         sender.execute(new SendMessage()
                                 .setChatId(action.chatId())
                                 .setText(Constants.START_MESSAGE)
@@ -75,11 +78,12 @@ public class Bot extends AbilityBot {
 
     public Reply replyToChooseButtons() {
         Consumer<Update> action = msg -> responseHandler.replyToChooseButtons(getChatId(msg), msg.getCallbackQuery().getData());
+
         return Reply.of(action, Flag.CALLBACK_QUERY);
     }
 
     public void sendDiscountCodeToChat(long chatId, String discountCode) {
-
+        log.debug("Sending discount code {} to chat {}", discountCode, chatId);
         try {
             this.execute(new SendMessage(chatId, discountCode));
         } catch (TelegramApiException e) {
@@ -113,8 +117,7 @@ public class Bot extends AbilityBot {
 
         public void replyToChooseButtons(Long chatId, String buttonId) {
 
-            //ToDo отправить сообщение в шину с айди чата и айди кнопки, поставить статус чату что он ожидает кода, по заврешению отправить код в чат.
-            System.out.println(String.format("Right now get a buttonId %s from chatId %s", buttonId, chatId));
+            log.trace("Send StartPollEvent to EventBus for chatId {} and ButtonId {}", chatId, buttonId);
             StartPollEvent event = new StartPollEvent();
             event.setChatId(chatId);
             event.setRestaurantName(buttonId);

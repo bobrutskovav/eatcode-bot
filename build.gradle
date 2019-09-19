@@ -1,5 +1,17 @@
 
-subprojects {
+
+allprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'com.palantir.docker'
+    
+        dependencies{
+            classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
+            annotationProcessor 'org.projectlombok:lombok:1.18.8'
+        }
+    
+    
     tasks.withType(JavaCompile) {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
@@ -14,7 +26,6 @@ task runAll {
 }
 
 
-//runAll.dependsOn ':gateway'
-//runAll.dependsOn ':telegram-bot'
-//runAll.dependsOn ':poll-runnner'
+
+
 

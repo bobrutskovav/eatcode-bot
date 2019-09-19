@@ -10,4 +10,6 @@ public class Constants {
     public static final String CODE_IS_DONE_FORMAT = "This is your discount code %s!";
 
     public static final String PLEASE_WAIT = "Ok, wait a little please!";
+
+    public static final String PLEASE_WAIT_AGAIN = "Your code is on a way! Please wait a little more!";
 }

@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.util.concurrent.FailureCallback;
 import org.springframework.util.concurrent.SuccessCallback;
 
@@ -20,7 +21,7 @@ import static com.codeborne.selenide.Selenide.*;
 
 
 @Service
-public class BurgerKingUITask implements PollTask {
+public class BurgerKingUITask implements PollTask<String> {
 
     private final Random random = new Random();
 
@@ -170,8 +171,9 @@ public class BurgerKingUITask implements PollTask {
         setWasThereOrderForChildStep8();
         startRandomPoll();
         setSexAgeSalary();
-        //Todo вернуть именно код , а не 'Ваш промокод: FF500586'
-        AsyncResult<String> result = new AsyncResult(getPromoCode());
+
+        String code = StringUtils.delete(getPromoCode(), "Ваш промокод: ");
+        AsyncResult<String> result = new AsyncResult(code);
         Selenide.close();
         result.addCallback(sCallback, fCallback);
         return result;

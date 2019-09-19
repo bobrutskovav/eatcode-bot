@@ -4,7 +4,6 @@ package com.scriptterror.pollrunner.controller;
 import com.scriptterror.pollrunner.model.DiscountCodeRequest;
 import com.scriptterror.pollrunner.service.DiscountCodeSender;
 import com.scriptterror.pollrunner.service.PollTask;
-import com.scriptterror.pollrunner.service.ResultsHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,14 +21,11 @@ import java.util.concurrent.Future;
 public class TaskController {
 
     private PollTask task;
-    private ResultsHandler handler;
     private DiscountCodeSender discountCodeSender;
 
     public TaskController(@Autowired PollTask task,
-                          @Autowired ResultsHandler resultsHandler,
                           @Autowired DiscountCodeSender codeSender) {
         this.task = task;
-        this.handler = resultsHandler;
         this.discountCodeSender = codeSender;
     }
 
@@ -49,16 +45,13 @@ public class TaskController {
         long chatId = request.getChatId();
         Map<String, Long> params = new HashMap<>();
         params.put("operationId", chatId);
-        Future<String> future = task.makePoll(params, discountCode -> {
+        Future future = task.makePoll(params, discountCode -> {
                     log.debug("Complete making a poll with result : {}", discountCode);
-                    discountCodeSender.sendDiscountCodeToBot(discountCode, chatId);
-                    //Todo возможно надо сделать через event
+                    discountCodeSender.sendDiscountCodeToBot((String) discountCode, chatId);
+                    //                    //Todo возможно надо сделать через event
                 },
 
                 (exception) -> log.error("Error {} on send a discount code to bot! OperationId {} ", exception.getMessage(), chatId)
         );
-        handler.registerAsyncResult(chatId, future);
-
-
     }
 }

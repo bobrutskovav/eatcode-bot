@@ -6,10 +6,10 @@ import org.springframework.util.concurrent.SuccessCallback;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-public interface PollTask {
+public interface PollTask<T> {
 
 
-    Future<String> makePoll(Map<String, Long> paramsForPoll,
+    Future<T> makePoll(Map<String, Long> paramsForPoll,
                             SuccessCallback<String> successCallback,
                             FailureCallback failureCallback);
 }

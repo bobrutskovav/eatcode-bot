@@ -1,17 +1,16 @@
-plugins {
-    id 'java'
-    id 'idea'
-    // id 'org.springframework.boot' version '2.1.6.RELEASE'
+
+
+task createDockerfile(type: Dockerfile) {
+    destFile = project.file("$dockerBuildDir/Dockerfile")
+    from 'openjdk:8-jre-alpine'
+    copyFile jar.archiveName, '/app/test_service.jar'
+    entryPoint 'java'
+    defaultCommand '-jar', '/app/test_service.jar'
+    exposePort 8080
+    runCommand 'apk --update --no-cache add curl'
+    instruction 'HEALTHCHECK CMD curl -f http://localhost:8080/hello || exit 1'
 }
 
-sourceCompatibility = 1.8
-
-repositories {
-//    maven{
-//        url "http://msk1-cnex001.unix.nspk.ru/repository/maven-proxy-group/"
-//    }
-    mavenCentral()
-}
 
 dependencies {
     compile group: 'com.google.guava', name: 'guava', version: '28.0-jre'

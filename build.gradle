@@ -4,19 +4,22 @@ plugins {
     id 'idea'
     id 'java'
     id 'org.springframework.boot' version '2.1.2.RELEASE'
-    id 'com.bmuschko.docker-remote-api' version '4.8.0' //Builds Dockerfile in runtime
+    id 'com.palantir.docker' version '0.22.1'
+  
 }
 
+
 subprojects {
-    def dockerBuildDir = 'build/docker/'
     group 'com.scriptterror'
     version '0.1'
 
     apply plugin: 'java'
     apply plugin: 'idea'
     apply plugin: 'org.springframework.boot'
-    apply plugin: 'com.bmuschko.docker-remote-api'
-
+    apply plugin: 'com.palantir.docker'
+    
+    
+    
     
     dependencies{
             annotationProcessor 'org.projectlombok:lombok:1.18.8'

@@ -1,17 +1,13 @@
 
 
-task createDockerfile(type: Dockerfile) {
-    destFile = project.file("$dockerBuildDir/Dockerfile")
-    from 'openjdk:8-jre-alpine'
-    copyFile jar.archiveName, '/app/test_service.jar'
-    entryPoint 'java'
-    defaultCommand '-jar', '/app/test_service.jar'
-    exposePort 8080
-    runCommand 'apk --update --no-cache add curl'
-    instruction 'HEALTHCHECK CMD curl -f http://localhost:8080/hello || exit 1'
+docker {
+    def jar = "$project.name-$project.version"
+    name "$project.name:$project.version"
+    files tasks.distTar.outputs, 'file1.txt', 'file2.txt'
+    buildArgs(['JAR_FILE': jar,
+               'EXTERNAL_PORT' : "${externalPort}",
+               'JASYPT_KEY' : "${JASYPT_KEY}"])
 }
-
-
 dependencies {
     compile group: 'com.google.guava', name: 'guava', version: '28.0-jre'
     compile "org.telegram:telegrambots-spring-boot-starter:4.1.2"

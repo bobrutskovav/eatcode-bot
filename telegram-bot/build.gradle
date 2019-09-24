@@ -2,12 +2,11 @@
 
 docker {
     def jar = "$project.name-$project.version"
-    def externalPort = project.property("externalPort")
-    def jasyptKey = project.property("jasyptKey")
+//    def externalPort = project.property("externalPort")
+//    def jasyptKey = project.property("jasyptKey")
     name "$project.name:$project.version"
     buildArgs(['JAR_FILE': jar,
-               'EXTERNAL_PORT' : "${externalPort}",
-               'JASYPT_KEY' : "${jasyptKey}"])
+               'EXTERNAL_PORT' : "8081"])
 }
 dependencies {
     compile group: 'com.google.guava', name: 'guava', version: '28.0-jre'

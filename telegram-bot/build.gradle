@@ -5,6 +5,7 @@ docker {
     def externalPort = project.property("externalPort")
     def jasyptKey = project.property("jasyptKey")
     name "$project.name:$project.version"
+    //files tasks.distTar.outputs, 'file1.txt', 'file2.txt'
     buildArgs(['JAR_FILE': jar,
                'EXTERNAL_PORT' : "${externalPort}",
                'JASYPT_KEY' : "${jasyptKey}"])

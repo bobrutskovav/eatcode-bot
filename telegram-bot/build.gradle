@@ -1,7 +1,8 @@
 
 
 docker {
-    def jar = "${project.buildDir}/libs/${project.name}-${project.version}.jar"
+    def jar = "${project.name}-${project.version}.jar"
+    files tasks.bootjar.outputs
 //    def externalPort = project.property("externalPort")
 //    def jasyptKey = project.property("jasyptKey")
     name "$project.name:$project.version"

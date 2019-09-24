@@ -1,7 +1,7 @@
 
 
 docker {
-    def jar = "$project.name-$project.version"
+    def jar = "${project.buildDir}/${project.name}-${project.version}.jar"
 //    def externalPort = project.property("externalPort")
 //    def jasyptKey = project.property("jasyptKey")
     name "$project.name:$project.version"

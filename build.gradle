@@ -3,7 +3,15 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.1.2.RELEASE'
     id 'com.palantir.docker' version '0.22.1'
+    id 'com.palantir.docker-compose' version '0.22.1'
 
+}
+
+dependencies {
+    for (subProject in project.subprojects){
+        docker "${project.group}:${subProject.name}:${project.version}"  
+    }
+   
 }
 
 

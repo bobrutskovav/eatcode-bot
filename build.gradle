@@ -7,12 +7,7 @@ plugins {
 
 }
 
-dependencies {
-    for (subProject in project.subprojects){
-        docker "${subProject.group}:${subProject.name}:${subProject.version}"  
-    }
-   
-}
+
 
 
 subprojects {
@@ -41,6 +36,14 @@ subprojects {
 
     repositories {
         mavenCentral()
+    }
+
+}
+
+
+dependencies {
+    for (subProject in project.subprojects){
+        docker "${subProject.group}:${subProject.name}:${subProject.version}"
     }
 
 }

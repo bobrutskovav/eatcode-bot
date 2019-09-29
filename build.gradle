@@ -46,10 +46,17 @@ subprojects {
 }
 
 
+task createDockerImages () {
+    subprojects {
+        task docker
+    }
+}
+
 task buildAll {
     subprojects { project -> buildAll.dependsOn("${project.path}:bootJar") }
 }
 
+createDockerImages.dependsOn buildAll
 
 
 

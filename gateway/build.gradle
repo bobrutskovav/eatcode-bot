@@ -1,4 +1,11 @@
-
+docker {
+    def buildFolder = "myBuild"
+    def jar = "${buildFolder}/libs/${project.name}-${project.version}.jar"
+    copySpec.from("${project.buildDir}").into(buildFolder)
+    name "$project.name:$project.version"
+    buildArgs(['JAR_FILE': jar,
+               'EXTERNAL_PORT' : "8080"])
+}
 
 dependencies {
     // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-zuul

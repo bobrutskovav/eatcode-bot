@@ -1,11 +1,17 @@
-
-
 plugins {
     id 'idea'
     id 'java'
     id 'org.springframework.boot' version '2.1.2.RELEASE'
     id 'com.palantir.docker' version '0.22.1'
-  
+    id 'com.palantir.docker-compose' version '0.22.1'
+
+}
+
+dependencies {
+    for (subProject in project.subprojects){
+        docker "${project.group}:${subProject.name}:${project.version}"  
+    }
+   
 }
 
 
@@ -17,12 +23,11 @@ subprojects {
     apply plugin: 'idea'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'com.palantir.docker'
-    
-    
-    
-    
-    dependencies{
-            annotationProcessor 'org.projectlombok:lombok:1.18.8'
+
+
+    dependencies {
+        compileOnly 'org.projectlombok:lombok:1.18.8'
+        annotationProcessor 'org.projectlombok:lombok:1.18.8'
     }
 
 
@@ -42,7 +47,7 @@ subprojects {
 
 
 task buildAll {
-    subprojects {project -> buildAll.dependsOn("${project.path}:bootJar")}
+    subprojects { project -> buildAll.dependsOn("${project.path}:bootJar") }
 }
 
 

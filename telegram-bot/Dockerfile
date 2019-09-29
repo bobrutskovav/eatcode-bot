@@ -2,8 +2,8 @@ FROM openjdk:8-jdk-alpine
 MAINTAINER scriptterror.com
 VOLUME /tmp
 ARG JAR_FILE
-ARG JASYPT_KEY
+ENV JAVA_OPTS=""
 ARG EXTERNAL_PORT
 EXPOSE 8080 ${EXTERNAL_PORT}
 COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom -DJASYPT_ENCRYPTOR_PASSWORD=${JASYPT_KEY} -Dserver.port=8080","-jar","/app.jar"]
+ENTRYPOINT exec java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar -Dserver.port=8080

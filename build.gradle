@@ -9,7 +9,7 @@ plugins {
 
 dependencies {
     for (subProject in project.subprojects){
-        docker "${project.group}:${subProject.name}:${project.version}"  
+        docker "${subProject.group}:${subProject.name}:${subProject.version}"  
     }
    
 }

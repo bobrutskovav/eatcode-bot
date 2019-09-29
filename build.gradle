@@ -45,18 +45,21 @@ subprojects {
 
 }
 
-
-task createDockerImages () {
-    subprojects {
-        task docker
-    }
+task cleanAll {
+	subprojects { project -> cleanAll.dependsOn("${project.path}:clean")}
 }
+
+task dockerImageAll {
+	subprojects { project -> dockerImageAll.dependsOn("${project.path}:docker")}
+}
+
 
 task buildAll {
     subprojects { project -> buildAll.dependsOn("${project.path}:bootJar") }
 }
 
-createDockerImages.dependsOn buildAll
+buildAll.dependsOn cleanAll
+dockerImageAll.dependsOn buildAll
 
 
 

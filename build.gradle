@@ -42,7 +42,7 @@ subprojects {
 
 dependencies {
     for (subProject in project.subprojects){
-        docker "${subProject.name}:${subProject.version}"  
+        docker "$subProject.group:$subProject.name:$subProject.version"
     }
    
 }

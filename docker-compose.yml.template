@@ -1,6 +1,6 @@
 gateway:
-  image: 'repository/gateway:{{com.scriptterror:gateway}}'
+  image: 'com.scriptterror/gateway:{{com.scriptterror:gateway}}'
 poll-runner:
-  image: 'repository/poll-runner:{{com.scriptterror:poll-runner}}'
+  image: 'com.scriptterror/poll-runner:{{com.scriptterror:poll-runner}}'
 telegram-bot:
-  image: 'repository/poll-runner:{{com.scriptterror:telegram-bot}}'
+  image: 'com.scriptterror/elegram-bot:{{com.scriptterror:telegram-bot}}'

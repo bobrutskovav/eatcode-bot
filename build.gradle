@@ -40,13 +40,15 @@ subprojects {
 
 }
 
-
 dependencies {
     for (subProject in project.subprojects){
-        docker project (":${subProject.name}")
+        docker "${subProject.name}:${subProject.version}"  
     }
-
+   
 }
+
+
+
 
 task cleanAll {
 	subprojects { project -> cleanAll.dependsOn("${project.path}:clean")}

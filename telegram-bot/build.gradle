@@ -4,7 +4,7 @@ docker {
     def buildFolder = "myBuild"
     def jar = "${buildFolder}/libs/${project.name}-${project.version}.jar"
     copySpec.from("${project.buildDir}").into(buildFolder)
-    name "$project.name:$project.version"
+    name "$project.group/$project.name:$project.version"
     //files tasks.distTar.outputs, 'file1.txt', 'file2.txt'
     buildArgs(['JAR_FILE': jar,
                'EXTERNAL_PORT' : "8081"])

@@ -1,0 +1,38 @@
+version: '3'
+services:
+  gateway:
+    container_name: "gateway"
+    image: 'com.scriptterror:gateway:0.1'
+    ports:
+      - 8080:8080
+    tty: true
+    links:
+      - poll-runner
+      - telegram-bot
+
+  poll-runner:
+    container_name: "poll-runner"
+    image: 'com.scriptterror:poll-runner:0.1'
+    ports:
+      - 8080:8092
+    tty: true
+    depends_on:
+      - gateway
+    links:
+      - gateway
+      - telegram-bot
+
+  telegram-bot:
+    env_file:
+      - "config.env"
+    container_name: "telegram-bot"
+    image: 'com.scriptterror:telegram-bot:0.1'
+    ports:
+      - 8080:8081
+    tty: true
+    depends_on:
+      - gateway
+      - poll-runner
+    links:
+      - gateway
+      - poll-runner

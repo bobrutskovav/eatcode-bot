@@ -10,7 +10,7 @@ services:
     container_name: "poll-runner-burger-king"
     image: 'com.scriptterror/poll-runner:0.1'
     environment:
-      - POLL_TASK = burger-king
+      - JAVA_OPTS=-Dpoll.task=burger-king
     ports:
       - 8082:8082
     depends_on:

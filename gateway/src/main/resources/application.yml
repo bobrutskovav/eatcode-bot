@@ -8,4 +8,5 @@ zuul:
       url: http://poll-runner-burger-king:8092
 
 logging:
-  level: info
+  level:
+    root: INFO

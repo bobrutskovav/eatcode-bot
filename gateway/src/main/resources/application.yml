@@ -2,9 +2,9 @@ zuul:
   routes:
     telegram-bot:
       path: /telegram-bot/**
-      url: http://localhost:8091
+      url: http://telegram-bot:8091
     poll-runnner-burger-king:
       path: /poll-runner-burger-king/**
-      url: http://localhost:8092
+      url: http://poll-runner-burger-king:8092
 
 

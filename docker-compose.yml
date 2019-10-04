@@ -6,9 +6,11 @@ services:
     ports:
       - 8080:8080
 
-  poll-runner:
-    container_name: "poll-runner"
+  poll-runner-burger-king:
+    container_name: "poll-runner-burger-king"
     image: 'com.scriptterror/poll-runner:0.1'
+    environment:
+      - POLL_TASK = burger-king
     ports:
       - 8082:8082
     depends_on:
@@ -24,4 +26,4 @@ services:
       - 8081:8081
     depends_on:
       - gateway
-      - poll-runner
+      - poll-runner-burger-king

@@ -7,4 +7,5 @@ zuul:
       path: /poll-runner-burger-king/**
       url: http://poll-runner-burger-king:8092
 
-
+logging:
+  level: info

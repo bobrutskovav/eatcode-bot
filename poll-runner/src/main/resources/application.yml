@@ -3,7 +3,7 @@ server:
 
 
 zuul:
-  host: localhost
+  host: gateway
   port: 8080
 
 logging:

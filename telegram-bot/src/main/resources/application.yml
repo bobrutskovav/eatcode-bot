@@ -10,7 +10,7 @@ bot:
 
 
 zuul:
-  host: gateway
+  host: localhost
   port: 8080
 
 

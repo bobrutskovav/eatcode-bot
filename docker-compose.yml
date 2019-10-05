@@ -3,14 +3,16 @@ services:
   gateway:
     container_name: "gateway"
     image: 'com.scriptterror/gateway:0.1'
+    env_file:
+      - "./gateway/config.env"
     ports:
       - 8080:8080
 
   poll-runner-burger-king:
     container_name: "poll-runner-burger-king"
     image: 'com.scriptterror/poll-runner:0.1'
-    environment:
-      - JAVA_OPTS=-Dpoll.task=burger-king
+    env_file:
+      - "./poll-runner/config.env"
     ports:
       - 8082:8082
     depends_on:
@@ -19,7 +21,7 @@ services:
 
   telegram-bot:
     env_file:
-      - "config.env"
+      - "./telegram-bot/config.env"
     container_name: "telegram-bot"
     image: 'com.scriptterror/telegram-bot:0.1'
     ports:

@@ -3,7 +3,7 @@ zuul:
     telegram-bot:
       path: /telegram-bot/**
       url: http://localhost:8081
-    poll-runner-burger-king:
+    poll-runnner-burger-king:
       path: /poll-runner-burger-king/**
       url: http://localhost:8082
 

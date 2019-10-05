@@ -2,8 +2,8 @@ zuul:
   routes:
     telegram-bot:
       path: /telegram-bot/**
-      url: http://localhost:8091
-    poll-runnner-burger-king:
+      url: http://localhost:8081
+    poll-runner-burger-king:
       path: /poll-runner-burger-king/**
-      url: http://localhost:8092
+      url: http://localhost:8082
 

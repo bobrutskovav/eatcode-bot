@@ -1,6 +1,7 @@
 version: '3.7'
 services:
   gateway:
+    hostname: "gateway"
     container_name: "gateway"
     image: 'com.scriptterror/gateway:0.1'
     env_file:
@@ -12,6 +13,7 @@ services:
       - back-network
 
   poll-runner-burger-king:
+    hostname: "poll-runner-burger-king"
     container_name: "poll-runner-burger-king"
     image: 'com.scriptterror/poll-runner:0.1'
     env_file:
@@ -24,6 +26,7 @@ services:
       - back-network
 
   telegram-bot:
+    hostname: "telegram-bot"
     env_file:
       - "./telegram-bot/config.env"
     container_name: "telegram-bot"
@@ -37,5 +40,5 @@ services:
       - front-network
 
 networks:
-  front-network:{}
-  back-network:{}
+  front-network: {}
+  back-network: {}

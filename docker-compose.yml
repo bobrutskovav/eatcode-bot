@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 services:
   gateway:
     container_name: "gateway"
@@ -6,7 +6,10 @@ services:
     env_file:
       - "./gateway/config.env"
     ports:
-      - 8080
+      - 8080:8080
+    networks:
+      - front-network
+      - back-network
 
   poll-runner-burger-king:
     container_name: "poll-runner-burger-king"
@@ -14,10 +17,11 @@ services:
     env_file:
       - "./poll-runner/config.env"
     ports:
-      - 8080
+      - 8082:8080
     depends_on:
       - gateway
- 
+    networks:
+      - back-network
 
   telegram-bot:
     env_file:
@@ -25,7 +29,13 @@ services:
     container_name: "telegram-bot"
     image: 'com.scriptterror/telegram-bot:0.1'
     ports:
-      - 8080:8080
+      - 8081:8080
     depends_on:
       - gateway
       - poll-runner-burger-king
+    networks:
+      - front-network
+
+networks:
+  front-network:{}
+  back-network:{}

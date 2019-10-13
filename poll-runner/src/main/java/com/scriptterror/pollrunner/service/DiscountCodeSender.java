@@ -2,6 +2,7 @@ package com.scriptterror.pollrunner.service;
 
 
 import com.scriptterror.pollrunner.model.DiscountCodeReport;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -10,14 +11,15 @@ import org.springframework.web.client.RestTemplate;
 public class DiscountCodeSender {
 
 
-    private RestTemplate restTemplate = new RestTemplate();
+    private RestTemplate restTemplate;
 
-    private String endpoint = "/telegram-bot/discountcode";
+    private String endpoint = "telegram-bot/discountcode";
     private String resultEndpoint;
 
     public DiscountCodeSender(@Value("${zuul.host}") String host,
-                              @Value("${zuul.port}") String port) {
-        this.resultEndpoint = String.format("http://%s:%s%s", host, port, endpoint);
+                              @Autowired RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+        this.resultEndpoint = String.format("http://%s/%s", host, endpoint);
 
     }
 

@@ -1,9 +1,18 @@
 zuul:
+  ignoredServices: '*'
   routes:
     telegram-bot:
       path: /telegram-bot/**
-      url: http://localhost:8081
+      serviceId: telegram-bot
     poll-runnner-burger-king:
       path: /poll-runner-burger-king/**
-      url: http://localhost:8082
+      serviceid: poll-runner-burger-king
+spring:
+  application:
+    name: gateway
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8083/eureka/
 

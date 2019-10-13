@@ -1,0 +1,15 @@
+server:
+  port: 8083
+
+eureka:
+  instance:
+    virtual-host-name: discovery-service
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    service-url:
+      defaultZone: http://localhost:8083/eureka
+
+spring:
+  application:
+    name: discovery-service

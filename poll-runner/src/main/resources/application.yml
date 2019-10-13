@@ -2,10 +2,18 @@ server:
   port: 8082
 
 
+spring:
+  application:
+    name: poll-runner
+
 zuul:
-  host: localhost
-  port: 8080
+  host: gateway
 
 logging:
   level:
     root: INFO
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8083/eureka/

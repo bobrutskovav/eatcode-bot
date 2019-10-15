@@ -1,5 +1,17 @@
 version: '3.7'
 services:
+  discovery-service:
+    hostname: "discovery-service"
+    container_name: "discovery-service"
+    image: "com.scriptterror/discovery-service:0.1"
+    ports:
+      - 8083:8080
+    networks:
+      - front-network
+      - back-network
+    env_file:
+      - "./discovery-service/config.env"
+  
   gateway:
     hostname: "gateway"
     container_name: "gateway"

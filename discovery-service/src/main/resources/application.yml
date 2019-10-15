@@ -3,6 +3,7 @@ server:
 
 eureka:
   instance:
+    hostname: discovery-service
     virtual-host-name: discovery-service
   client:
     registerWithEureka: false

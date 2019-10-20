@@ -3,8 +3,7 @@ docker {
     def jar = "${buildFolder}/libs/${project.name}-${project.version}.jar"
     copySpec.from("${project.buildDir}").into(buildFolder)
     name "$project.group/$project.name:$project.version"
-    buildArgs(['JAR_FILE': jar,
-               'EXTERNAL_PORT' : "8080"])
+    buildArgs(['JAR_FILE': jar])
 }
 
 sourceCompatibility = 1.8
@@ -15,6 +14,7 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-server
+    compile 'org.springframework.boot:spring-boot-starter-web:2.1.3.RELEASE'	
     compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-server', version: '2.1.3.RELEASE'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }

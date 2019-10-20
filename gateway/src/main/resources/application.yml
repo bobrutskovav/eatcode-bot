@@ -4,15 +4,18 @@ zuul:
     telegram-bot:
       path: /telegram-bot/**
       serviceId: telegram-bot
+      sensitiveHeaders:
     poll-runnner-burger-king:
       path: /poll-runner-burger-king/**
       serviceid: poll-runner-burger-king
+      sensitiveHeaders:
 spring:
   application:
     name: gateway
 
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: http://localhost:8083/eureka/
-
+      defaultZone: http://discovery-service:8761/eureka/

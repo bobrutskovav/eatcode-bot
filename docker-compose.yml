@@ -1,41 +1,29 @@
 version: '3.7'
 services:
   discovery-service:
-    hostname: "discovery-service"
-    container_name: "discovery-service"
     image: "com.scriptterror/discovery-service:0.1"
     ports:
-      - 8083:8080
-    networks:
-      - front-network
-      - back-network
+      - 8761:8761
     env_file:
       - "./discovery-service/config.env"
   
   gateway:
-    hostname: "gateway"
-    container_name: "gateway"
     image: 'com.scriptterror/gateway:0.1'
     env_file:
       - "./gateway/config.env"
     ports:
       - 8080:8080
-    networks:
-      - front-network
-      - back-network
-
+    depends_on:
+      - discovery-service
+ 
   poll-runner-burger-king:
-    hostname: "poll-runner-burger-king"
-    container_name: "poll-runner-burger-king"
     image: 'com.scriptterror/poll-runner:0.1'
     env_file:
       - "./poll-runner/config.env"
     ports:
-      - 8082:8080
+      - 8082:8082
     depends_on:
       - gateway
-    networks:
-      - back-network
 
   telegram-bot:
     hostname: "telegram-bot"
@@ -44,13 +32,7 @@ services:
     container_name: "telegram-bot"
     image: 'com.scriptterror/telegram-bot:0.1'
     ports:
-      - 8081:8080
+      - 8081:8081
     depends_on:
       - gateway
       - poll-runner-burger-king
-    networks:
-      - front-network
-
-networks:
-  front-network: {}
-  back-network: {}
